@@ -1,0 +1,16 @@
+{
+    "contents" : "#' @title Glue two data frames\n#' @description Merge two data frames by common columns such that the original layout of the first data frame is retained and\n#' the extra information contained in the second is added to the right.\n#' @param x, y  data frames, or objects to be coerced to one.\n#' @param by, by.x, by.y specifications of the columns used for merging\n#' @param all.x  logical; if TRUE, then extra rows will be added to the output, one for each row in \\code{x} that has no \n#' matching row in \\code{y}. These rows will have \\code{NA}s in those columns that are usually filled with values from \n#' \\code{y}. The default is \\code{TRUE}, so that all rows of \\code{x} are included in the output.\n#' @param suffixes  a character vector of length 2 specifying the suffixes to be used for making unique the names of columns\n#' in the result which not used for merging (appearing in \\code{by}).\n#' @export\n#' @examples\n#' \\donttest{\n#' info.gear=data.frame(am=0:1,name=c(\"manual\",\"automatic\"),info=c(\"Worldwide\",\"Mainly US\"))\n#' glue(mtcars,info.gear)\n#' glue(mtcars,cbind(info.gear,wt=\"not specified\"),by=\"am\")\n#' info.iris=data.frame(Species=c(\"versicolor\",\"virginica\",\"sibirica\"),Origin=c(\"North America\",\"Florida, Georgia\",\"Russia\"))\n#' glue(iris,info.iris)\n#' glue(iris,info.iris,all.x=FALSE)\n#' }\nglue=function(x,y,by=intersect(names(x),names(y)),by.x=by,by.y=by,all.x=TRUE,suffixes=c(\".x\",\".y\")){\n  if(anyDuplicated(y[by.y])!=0){\n    warning(\"Duplicates present in 'y[by.y]'.\",call.=FALSE)\n    y=y[!duplicated(y[by.y]),]\n  }\n  match.idx=match(x[[by.x]],y[[by.y]])\n  \n  y=y[names(y)!=by.y]\n  has.common.names=any(cnm.x<-names(x)%in%names(y))\n  if(has.common.names){\n    warning(\"Common names in data 'x' and 'y'.\",call.=FALSE)\n    cnm.y=names(y)%in%names(x);\n    names(x)[cnm.x]=paste0(names(x)[cnm.x],suffixes[1L]);\n    names(y)[cnm.y]=paste0(names(y)[cnm.y],suffixes[2L]);\n  }\n  \n  if(!all.x){\n    valid.match.idx=!is.na(match.idx)\n    x=x[valid.match.idx,]\n    match.idx=match.idx[valid.match.idx]\n  }\n  \n  cbind(x,y[match.idx,,drop=FALSE])\n}",
+    "created" : 1384476976673.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1836780487",
+    "id" : "3D568832",
+    "lastKnownWriteTime" : 1384480958,
+    "path" : "~/R&D/R packages/Source packages/lazyr/R/glue_toolbox.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

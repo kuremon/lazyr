@@ -1,0 +1,15 @@
+{
+    "contents" : "\ninverse.index=function(i){\n  res=NA;\n  res[i]=seq(i);\n  return(res)\n}\n\ninverse.order=function(...,na.last=TRUE,decreasing=FALSE){\n  od=order(...,na.last,decreasing);\n  return(inverse.index(od));\n}\n\norder.data.frame=function(data,na.last=TRUE,decreasing=FALSE){\n  args=c(as.list(data),list(na.last=na.last,decreasing=decreasing));\n  od=do.call(order,args);\n  return(od);\n}\n\ninverse.order.data.frame=function(data,na.last=TRUE,decreasing=FALSE){\n  od=order.data.frame(data,na.last=na.last,decreasing=decreasing);\n  return(inverse.index(od));\n}\n\nglue=function(x,y,by=intersect(names(x),names(y)),by.x=by,by.y=by,suffixes=c(\".x\",\".y\")){\n  \n  var.x=colwise(as.ordered,by.x)(x);\n  var.y=as.data.frame(mapply(ordered,x=as.list(y[by.y]),levels=lapply(var.x,levels),SIMPLIFY=F));\n  \n  index.y=inverse.order.data.frame(var.x)[order.data.frame(var.y)];\n  \n  if(any(!mapply(identical,x=var.x,y=var.y[index.y,,drop=F],SIMPLIFY=T))){\n    stop(\"The two data frames cannot be glued in by.x and by.y.\");\n  }\n  \n  y=y[-fix.by(by=by.y,y)];\n  has.common.names=any(cnm.x<-names(x)%in%names(y))\n  if(has.common.names){\n    cnm.y=names(y)%in%names(x);\n    names(x)[cnm.x]=paste0(names(x)[cnm.x],suffixes[1L]);\n    names(y)[cnm.y]=paste0(names(y)[cnm.y],suffixes[2L]);\n  }\n  \n  res=cbind(x,y[index.y,,drop=F]);\n  row.names(res)=row.names(x);\n  return(res);\n}\n",
+    "created" : 1384476969935.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3714185052",
+    "id" : "AB0D8E25",
+    "lastKnownWriteTime" : 1384476421,
+    "path" : "~/R&D/R packages/Code to package/toolbox_glue.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

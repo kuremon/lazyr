@@ -1,0 +1,26 @@
+Package: lazyr
+Type: Package
+Title: Package for the lazy ones
+Version: 1.0
+Date: 2013-06-04
+Author: Clement Bonini
+Maintainer: Clement Bonini <clement.bonini@gmail.com>
+Description: This package is a motley of functions for data management (no
+    statistical analysis) that could come in handy on a regular basis (or at
+    least they did in the past). If you're lazy when it comes to
+    copying/pasting between projects or reinventing the wheel but not so much
+    when it comes to testing new functions and improving them, this package
+    might be for you.
+License: GPL
+Collate:
+    'date_toolbox.R'
+    'general_toolbox.R'
+    'within_toolbox.R'
+    'insert.R'
+    'rearrange.R'
+    'see.R'
+    'admin_toolbox.R'
+    'base_generalization.R'
+    'lazyr.R'
+    'beautiful.R'
+    'glue_toolbox.R'

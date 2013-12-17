@@ -1,0 +1,16 @@
+{
+    "contents" : "#' @title n-ary set union\n#' @description\n#' Performs set union on an unspecified number of arguments\n#' @param ... vectors (of the same mode)\n#' @return The union of all vectors.\n#' @seealso \\code{\\link{Reduce_operator}}\n#' @export\n#' @examples\n#' \\donttest{\n#' n.union(1:5)\n#' n.union(1:5,61) # same as base::union\n#' n.union(1:5,61,3:6)\n#' }\nn.union=recurs::Reduce_operator(base::union)\n\nexpand.mgrid.base=function(...){\n  args=list(...)\n  x=as.data.frame(args[[1]],stringsAsFactors = FALSE)\n  y=as.data.frame(args[[2]],stringsAsFactors = FALSE)\n  \n  nx=nrow(x)\n  ny=nrow(y)\n  \n  unrowname(cbind(x[rep(seq(nx),each=ny),,drop=FALSE],y[rep(seq(ny),nx),,drop=FALSE]))\n}\n\n#' @title expand grid for data frames\n#' @description\n#' Performs the equivalent of \\code{\\link{expand.grid}} on data frames.\n#' @param ... data frames\n#' @return A data.frame with all possible combinations of the original data frames in\n#' \\code{\\link{...}}.\n#' @seealso \\code{\\link{expand.grid}}\n#' @export\n#' @examples\n#' \\donttest{\n#' x=data.frame(value=0:1)\n#' expand.mgrid(mtcars[1:3,c(\"wt\",\"cyl\")],iris[50:51,c(\"Petal.Width\",\"Species\")],x)\n#' }\nexpand.mgrid=recurs::Reduce_operator(expand.mgrid.base)\n\n\n#' @title Match a vector to a list of vector\n#' @seealso \\code{\\link{match}}\n#' @export\n#' @examples\n#' \\donttest{\n#' x=letters[1:4]\n#' list.table=list(\"c\",\"e\",c(\"a\",\"b\"),c(\"b\",\"5\"))\n#' match.in(x,list.table)\n#' }\nmatch.in=function(x,list.table){\n  apply(do.call(rbind,lapply(list.table,function(l)x%in%l)),2,\n        function(col){\n          if(all(!col)) return(NA)\n          which(col)\n        })\n}\n\n#' @title Linearly scale a vector of numeric valies to 0-1\n#' @param x a numeric vector\n#' @export\n#' @examples\n#' \\donttest{\n#' scale01(1:10)\n#' }\nscale01=function(x){\n  as.vector(scale(x,min(x),max(x)-min(x)))\n}\n\n#' @title Replicate a matrix\n#' @rdname repmat\n#' @param A matrix to replicate\n#' @param m number of row replication\n#' @param n number of colum replication\n#' @export\nrepmat.i=function(A,m){\n  A=as.matrix(A)\n  matrix(rep(t(A),m),ncol=ncol(A),byrow=TRUE) \n}\n\n#' @rdname repmat\n#' @export\nrepmat.j=function(A,n){\n  A=as.matrix(A)\n  matrix(rep(A,n),nrow=nrow(A),byrow=FALSE) \n}\n\n#' @rdname repmat\n#' @export\nrepmat=function(A,m,n){\n  repmat.j(repmat.i(A,m),n)\n}",
+    "created" : 1385529957728.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3510970739",
+    "id" : "B2D6C8A",
+    "lastKnownWriteTime" : 1384466880,
+    "path" : "~/R&D/R packages/Source packages/lazyr/R/base_generalization.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
